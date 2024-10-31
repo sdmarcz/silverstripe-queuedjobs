@@ -837,6 +837,9 @@ class QueuedJobService
                     $this->handleJobInitialisationException($jobDescriptor, $e);
                     $broken = true;
                     $this->finaliseLogging($logger);
+                    // TODO: testing
+                    $logger->error($e->getMessage());
+                    throw $e;
                     return;
                 }
 
@@ -922,6 +925,9 @@ class QueuedJobService
                             $logger->error($e->getMessage(), ['exception' => $e]);
                             $this->markJobAsBroken($jobDescriptor);
                             $this->extend('updateJobDescriptorAndJobOnException', $jobDescriptor, $job, $e);
+                            // TODO: testin
+                            $logger->error($e->getMessage());
+                            throw $e;
                         }
 
                         ob_end_flush();
@@ -1001,6 +1007,9 @@ class QueuedJobService
             } catch (Throwable $e) {
                 $this->handleBrokenJobException($jobDescriptor, $job, $e);
                 $broken = true;
+                // TODO: testing
+                $logger->error($e->getMessage());
+                throw $e;
             }
 
             $this->finaliseLogging($logger);
@@ -1041,6 +1050,8 @@ class QueuedJobService
      */
     protected function withNestedState(callable $callback)
     {
+        // TODO: testing
+        return $callback();
         // set up a custom error handler for this processing
         $errorHandler = JobErrorHandler::create();
 
